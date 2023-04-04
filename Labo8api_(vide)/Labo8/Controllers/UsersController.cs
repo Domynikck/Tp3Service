@@ -2,6 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Labo8.Controllers
 {
@@ -39,9 +43,41 @@ namespace Labo8.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login(RegisterDTO register)
+        public async Task<ActionResult> Login(LoginDTO login)
         {
-            return Ok(new { Message = "Login réussi" });
+            User user = await UserManager.FindByNameAsync(login.Username);
+            if (user != null && await UserManager.CheckPasswordAsync(user, login.Password))
+            {
+                IList<string> roles = await UserManager.GetRolesAsync(user);
+                List<Claim> authClaims = new List<Claim>();
+                foreach (string role in roles)
+                {
+                    authClaims.Add(new Claim(ClaimTypes.Role, role));
+                }
+                authClaims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
+
+                SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8
+                    .GetBytes("HHHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
+                JwtSecurityToken token = new JwtSecurityToken(
+                    issuer: "http://localhost:7222",
+                    audience: "http://localhost:4200",
+                    claims: authClaims,
+                    expires: DateTime.Now.AddMinutes(30),
+                    signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature));
+
+                return Ok( new
+                {
+                    token = new JwtSecurityTokenHandler(). WriteToken(token),
+                    validTo = token.ValidTo
+                });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Le nom d'utilisateur ou le mot de passe est invalide." });
+            }
+
+
+           
         }
 
 

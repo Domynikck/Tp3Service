@@ -10613,11 +10613,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\2139752\\Desktop\\TP3\\Labo8api_(vide)\\Labo8\\Labo8.csproj",
+      "projectUniqueName": "C:\\Users\\2139752\\Desktop\\Tp3Service\\Labo8api_(vide)\\Labo8\\Labo8.csproj",
       "projectName": "Labo8",
-      "projectPath": "C:\\Users\\2139752\\Desktop\\TP3\\Labo8api_(vide)\\Labo8\\Labo8.csproj",
+      "projectPath": "C:\\Users\\2139752\\Desktop\\Tp3Service\\Labo8api_(vide)\\Labo8\\Labo8.csproj",
       "packagesPath": "C:\\Users\\2139752\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\2139752\\Desktop\\TP3\\Labo8api_(vide)\\Labo8\\obj\\",
+      "outputPath": "C:\\Users\\2139752\\Desktop\\Tp3Service\\Labo8api_(vide)\\Labo8\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
