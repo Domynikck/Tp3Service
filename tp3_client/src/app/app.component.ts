@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
+  Disconnect() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("tokenValid");
+  }
   
 }

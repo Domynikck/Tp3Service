@@ -21,8 +21,10 @@ export class LoginComponent implements OnInit {
     // Retourner à la page d'accueil
       let loginDTO = new UserLogin(this.loginUsername, this.loginPassword);
       console.log(this.loginUsername + this.loginPassword+ "yo");
-      let x = await lastValueFrom(this.http.post<UserLogin>("https://localhost:7222/api/Users/login", loginDTO));
+      let x = await lastValueFrom(this.http.post<any>("https://localhost:7222/api/Users/login", loginDTO));
       console.log(x);
+      localStorage.setItem("token", x.token );
+      localStorage.setItem("tokenValid", x.validTo);
     this.router.navigate(['/publicGalleries']);
   }
 
