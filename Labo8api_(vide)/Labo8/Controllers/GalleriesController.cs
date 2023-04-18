@@ -32,9 +32,17 @@ namespace Labo8.Controllers
           {
               return NotFound();
           }
-            return await _context.Gallerie.ToListAsync();
-        }
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User? user = await _context.Users.FindAsync(userId);
+            List<Gallerie> galleries = await _context.Gallerie.ToListAsync();
+            foreach (var item in galleries)
+            {
 
+            }
+
+            return galleries;
+        }
+        
 
 
         // GET: api/MyGalleries
