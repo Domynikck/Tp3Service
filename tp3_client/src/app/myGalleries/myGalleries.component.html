@@ -54,8 +54,8 @@
 
         <!-- Changer la visibilité -->
         <div class="option">
-          <button mat-raised-button>Rendre privée <mat-icon>verified_user</mat-icon></button>
-          <button mat-raised-button>Rendre publique	<mat-icon>remove_red_eye</mat-icon></button>
+          <button mat-raised-button (click)="gallerieVisibilite(false)">Rendre privée <mat-icon>verified_user</mat-icon></button>
+          <button mat-raised-button (click)="gallerieVisibilite(true)" >Rendre publique	<mat-icon>remove_red_eye</mat-icon></button>
         </div>
 
         <!-- Supprimer la galerie -->

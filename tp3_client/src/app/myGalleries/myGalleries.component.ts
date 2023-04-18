@@ -46,7 +46,7 @@ updateInfo()
       })
     }
 
-    let x = await lastValueFrom(this.http.get<any>("https://localhost:7222/api/Galleries/", httpOptions));
+    let x = await lastValueFrom(this.http.get<any>("https://localhost:7222/api/Galleries/MyGalleries/", httpOptions));
     this.listGalleries = x;
     console.log(x);
 
@@ -56,6 +56,26 @@ gallerieClick(gallerie : Gallerie) {
   console.log(this.gallerieCourante);
 }
 
+async gallerieVisibilite(bool : boolean) {
+  if(this.gallerieCourante != undefined) {
+
+    this.gallerieCourante.publique = bool;
+    let token = localStorage.getItem("token");
+    let httpOptions = {
+      headers : new HttpHeaders({
+        'Content-Type' : 'application/json',
+        'Authorization' : 'Bearer ' + token
+      })
+    }
+
+
+    let x = await lastValueFrom(this.http.put<any>("https://localhost:7222/api/Galleries/" + this.gallerieCourante.id, this.gallerieCourante , httpOptions));
+console.log(x);
+
+
+    this.updateInfo();
+  }
+}
 
 
 }

@@ -37,25 +37,25 @@ namespace Labo8.Controllers
 
 
 
-        //// GET: api/MyGalleries
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Gallerie>>> GetMyGalleries()
-        //{
-        //    if (_context.Gallerie == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    User? user = await _context.Users.FindAsync(userId);
+        // GET: api/MyGalleries
+        [HttpGet("MyGalleries")]
+        public async Task<ActionResult<IEnumerable<Gallerie>>> GetMyGalleries()
+        {
+            if (_context.Gallerie == null)
+            {
+                return NotFound();
+            }
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User? user = await _context.Users.FindAsync(userId);
 
-        //    if (user != null)
-        //    {
-        //        return user.Galleries;
-        //    }
+            if (user != null)
+            {
+                return user.Galleries;
+            }
 
 
-        //    return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Utilisateur non toruvé" });
-        //}
+            return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Utilisateur non toruvé" });
+        }
 
 
         // GET: api/Galleries/5
@@ -85,9 +85,19 @@ namespace Labo8.Controllers
             {
                 return BadRequest();
             }
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User? user = await _context.Users.FindAsync(userId);
+
             Gallerie gallerie1 = await _context.Gallerie.FindAsync(id);
-            gallerie1 = gallerie;
-            _context.Entry(gallerie).State = EntityState.Modified;
+
+            if (!gallerie1.Users.Any(u => u.Id == userId)) // Vérifie si la gallerie contient l'user courant
+            {
+                return Forbid(); 
+            }
+
+            gallerie1.Publique = gallerie.Publique;
+
 
             try
             {
