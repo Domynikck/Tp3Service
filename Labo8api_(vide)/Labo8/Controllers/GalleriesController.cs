@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Labo8.Data;
 using Labo8.Models;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Labo8.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class GalleriesController : ControllerBase
@@ -31,6 +34,29 @@ namespace Labo8.Controllers
           }
             return await _context.Gallerie.ToListAsync();
         }
+
+
+
+        //// GET: api/MyGalleries
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Gallerie>>> GetMyGalleries()
+        //{
+        //    if (_context.Gallerie == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    User? user = await _context.Users.FindAsync(userId);
+
+        //    if (user != null)
+        //    {
+        //        return user.Galleries;
+        //    }
+
+
+        //    return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Utilisateur non toruvé" });
+        //}
+
 
         // GET: api/Galleries/5
         [HttpGet("{id}")]
@@ -59,7 +85,8 @@ namespace Labo8.Controllers
             {
                 return BadRequest();
             }
-
+            Gallerie gallerie1 = await _context.Gallerie.FindAsync(id);
+            gallerie1 = gallerie;
             _context.Entry(gallerie).State = EntityState.Modified;
 
             try
@@ -90,10 +117,31 @@ namespace Labo8.Controllers
           {
               return Problem("Entity set 'Labo8Context.Gallerie'  is null.");
           }
-            _context.Gallerie.Add(gallerie);
-            await _context.SaveChangesAsync();
+            string userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User? user = await _context.Users.FindAsync(userID);
+            if (user != null)
+            {
+                List<User> users = new List<User>();
+                users.Add(user);
+                gallerie.Users = users;
 
-            return CreatedAtAction("GetGallerie", new { id = gallerie.Id }, gallerie);
+
+                List<Gallerie> galleries = new List<Gallerie>();
+                galleries.Add(gallerie);
+                user.Galleries = galleries;
+
+                _context.Gallerie.Add(gallerie);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction("GetGallerie", new { id = gallerie.Id }, gallerie);
+            }
+
+
+
+
+
+
+            return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Utilisateur non trouvé." });
         }
 
         // DELETE: api/Galleries/5

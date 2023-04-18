@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Labo8.Models
 {
@@ -8,7 +9,9 @@ namespace Labo8.Models
         [Required]
         public bool Publique { get; set; }
         public string? Image { get; set; }
+        public string GallerieName { get; set; }
 
-        public virtual List<User> Users { get; set; } = null!;
+        [JsonIgnore]
+        public virtual List<User>? Users { get; set; } = null!;
     }
 }

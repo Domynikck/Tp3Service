@@ -29,7 +29,7 @@ namespace Labo8.Controllers
 
             User user = new User()
             {
-                UserName = register.Username,
+                UserName = register.UserName,
                 Email = register.Email
             };
 

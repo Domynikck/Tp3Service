@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace Labo8.Models
 {
-    public class RegisterDTO
+    public class RegisterDTO : IdentityUser
     {
         public int Id { get; set; }
 
-        [Required]
-        public string Username { get; set; } = null!;
+
 
         [Required]
        
