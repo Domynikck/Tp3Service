@@ -35,6 +35,28 @@ namespace Labo8.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("GallerieUser");
+
+                    b.HasData(
+                        new
+                        {
+                            GalleriesId = 1,
+                            UsersId = "11111111-1111-1111-1111-111111111111"
+                        },
+                        new
+                        {
+                            GalleriesId = 2,
+                            UsersId = "11111111-1111-1111-1111-111111111111"
+                        },
+                        new
+                        {
+                            GalleriesId = 3,
+                            UsersId = "11111111-1111-1111-1111-111111111112"
+                        },
+                        new
+                        {
+                            GalleriesId = 4,
+                            UsersId = "11111111-1111-1111-1111-111111111112"
+                        });
                 });
 
             modelBuilder.Entity("Labo8.Models.Animal", b =>
@@ -79,6 +101,32 @@ namespace Labo8.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Gallerie");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            GallerieName = "Incroyable",
+                            Publique = true
+                        },
+                        new
+                        {
+                            Id = 2,
+                            GallerieName = "IncroyableMais2EtPrive",
+                            Publique = false
+                        },
+                        new
+                        {
+                            Id = 3,
+                            GallerieName = "Champagne",
+                            Publique = true
+                        },
+                        new
+                        {
+                            Id = 4,
+                            GallerieName = "EglantinEtEglantine",
+                            Publique = false
+                        });
                 });
 
             modelBuilder.Entity("Labo8.Models.User", b =>
@@ -144,6 +192,40 @@ namespace Labo8.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "11111111-1111-1111-1111-111111111111",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "e9eaeec5-7b4a-4a95-a3ba-0c034ec5e5aa",
+                            Email = "samuelbienvenue@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "SAMUELBIENVENUE@GMAIL.COM",
+                            NormalizedUserName = "HUGO",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGp7Mh2H5fOdqmnHx/+SKLtMF0WrSJgBpIE5Oeo34+v/GPIp83wD4cUl8KQoRZbNjw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "8840b1e4-c01c-499b-913c-fb4bed100d19",
+                            TwoFactorEnabled = false,
+                            UserName = "Hugo"
+                        },
+                        new
+                        {
+                            Id = "11111111-1111-1111-1111-111111111112",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "7811971e-9d63-48c4-88b1-39cd7a26989f",
+                            Email = "samuelbienvenue@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "SAMUELBIENVENUE@GMAIL.COM",
+                            NormalizedUserName = "EGLANTIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKaIMjxnc+v54Jmdpv8KdH5yszqdbLSwHC/nmCrbgikwcjTWPSY3OqMwZqjc4vc8Fw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "f2df74e9-30eb-4b22-9e81-e933de2b24c2",
+                            TwoFactorEnabled = false,
+                            UserName = "Eglantin"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

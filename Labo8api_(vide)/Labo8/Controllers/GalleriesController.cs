@@ -35,14 +35,25 @@ namespace Labo8.Controllers
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             User? user = await _context.Users.FindAsync(userId);
             List<Gallerie> galleries = await _context.Gallerie.ToListAsync();
+            List<Gallerie> galleriesAEnlever = new List<Gallerie>();
             foreach (var item in galleries)
             {
+                if (item.Users.Contains(user) || item.Publique == false)
+                {
+                    galleriesAEnlever.Add(item);
+                }
+            }
 
+            foreach (var item in galleriesAEnlever)
+            {
+                galleries.Remove(item);
             }
 
             return galleries;
         }
         
+
+
 
 
         // GET: api/MyGalleries
@@ -83,6 +94,40 @@ namespace Labo8.Controllers
 
             return gallerie;
         }
+
+
+
+        // GET: api/Galleries/5
+        [HttpPut("PartageGalerie/{id}/{nomUser}")]
+        public async Task<ActionResult> PartageMyGallerie(int id, string nomUser)
+        {
+           
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User? user = await _context.Users.FindAsync(userId);
+
+            User userPartage = _context.Users.FirstOrDefault(u => u.NormalizedUserName == nomUser.ToUpper());
+
+            Gallerie gallerie1 = await _context.Gallerie.FindAsync(id);
+
+            if (gallerie1.Users.Contains(userPartage))
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Utilisateur Déja ajouté" });
+            }
+
+            gallerie1.Users.Add(userPartage);
+
+
+            await _context.SaveChangesAsync();
+
+            if (user != null)
+            {
+                return NoContent();
+            }
+
+
+            return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Utilisateur non toruvé" });
+        }
+
 
         // PUT: api/Galleries/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -174,6 +219,14 @@ namespace Labo8.Controllers
             if (gallerie == null)
             {
                 return NotFound();
+            }
+
+            string userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User? user = await _context.Users.FindAsync(userID);
+
+            if (!gallerie.Users.Contains(user))
+            {
+                return Forbid();
             }
 
             _context.Gallerie.Remove(gallerie);

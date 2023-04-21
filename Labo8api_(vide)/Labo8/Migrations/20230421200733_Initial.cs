@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Labo8.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -69,7 +69,8 @@ namespace Labo8.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Publique = table.Column<bool>(type: "bit", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GallerieName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -204,6 +205,37 @@ namespace Labo8.Migrations
                         principalTable: "Gallerie",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "11111111-1111-1111-1111-111111111111", 0, "e9eaeec5-7b4a-4a95-a3ba-0c034ec5e5aa", "samuelbienvenue@gmail.com", false, false, null, "SAMUELBIENVENUE@GMAIL.COM", "HUGO", "AQAAAAEAACcQAAAAEGp7Mh2H5fOdqmnHx/+SKLtMF0WrSJgBpIE5Oeo34+v/GPIp83wD4cUl8KQoRZbNjw==", null, false, "8840b1e4-c01c-499b-913c-fb4bed100d19", false, "Hugo" },
+                    { "11111111-1111-1111-1111-111111111112", 0, "7811971e-9d63-48c4-88b1-39cd7a26989f", "samuelbienvenue@gmail.com", false, false, null, "SAMUELBIENVENUE@GMAIL.COM", "EGLANTIN", "AQAAAAEAACcQAAAAEKaIMjxnc+v54Jmdpv8KdH5yszqdbLSwHC/nmCrbgikwcjTWPSY3OqMwZqjc4vc8Fw==", null, false, "f2df74e9-30eb-4b22-9e81-e933de2b24c2", false, "Eglantin" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Gallerie",
+                columns: new[] { "Id", "GallerieName", "Image", "Publique" },
+                values: new object[,]
+                {
+                    { 1, "Incroyable", null, true },
+                    { 2, "IncroyableMais2EtPrive", null, false },
+                    { 3, "Champagne", null, true },
+                    { 4, "EglantinEtEglantine", null, false }
+                });
+
+            migrationBuilder.InsertData(
+                table: "GallerieUser",
+                columns: new[] { "GalleriesId", "UsersId" },
+                values: new object[,]
+                {
+                    { 1, "11111111-1111-1111-1111-111111111111" },
+                    { 2, "11111111-1111-1111-1111-111111111111" },
+                    { 3, "11111111-1111-1111-1111-111111111112" },
+                    { 4, "11111111-1111-1111-1111-111111111112" }
                 });
 
             migrationBuilder.CreateIndex(

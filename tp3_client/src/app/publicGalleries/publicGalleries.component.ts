@@ -16,15 +16,9 @@ export class PublicGalleriesComponent implements OnInit {
     this.getGallery();
   }
   async getGallery() {
-    let token = localStorage.getItem("token");
-    let httpOptions = {
-      headers : new HttpHeaders({
-        'Content-Type' : 'application/json',
-        'Authorization' : 'Bearer ' + token
-      })
-    }
+    
 
-    let x = await lastValueFrom(this.http.get<any>("https://localhost:7222/api/Galleries/", httpOptions));
+    let x = await lastValueFrom(this.http.get<any>("https://localhost:7222/api/Galleries/"));
     console.log(x);
 this.listeGalleriesPublique = x;
   }

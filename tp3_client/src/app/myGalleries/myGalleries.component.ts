@@ -12,6 +12,7 @@ export class MyGalleriesComponent implements OnInit {
   newGalleryIsPublic !: boolean;
   listGalleries : Gallerie[] = [];
   gallerieCourante : Gallerie | undefined;
+  partageUsername : string | undefined;
   constructor(public http : HttpClient) { }
 
   ngOnInit() {
@@ -60,16 +61,10 @@ async gallerieVisibilite(bool : boolean) {
   if(this.gallerieCourante != undefined) {
 
     this.gallerieCourante.publique = bool;
-    let token = localStorage.getItem("token");
-    let httpOptions = {
-      headers : new HttpHeaders({
-        'Content-Type' : 'application/json',
-        'Authorization' : 'Bearer ' + token
-      })
-    }
 
 
-    let x = await lastValueFrom(this.http.put<any>("https://localhost:7222/api/Galleries/" + this.gallerieCourante.id, this.gallerieCourante , httpOptions));
+
+    let x = await lastValueFrom(this.http.put<any>("https://localhost:7222/api/Galleries/" + this.gallerieCourante.id, this.gallerieCourante));
 console.log(x);
 
 
@@ -77,5 +72,24 @@ console.log(x);
   }
 }
 
+async PartagerGalerie() {
+  console.log(this.partageUsername)
+  if(this.partageUsername != undefined && this.gallerieCourante != undefined) {
+    let x = await lastValueFrom(this.http.put<any>("https://localhost:7222/api/Galleries/PartageGalerie/" + this.gallerieCourante.id + "/" + this.partageUsername, this.gallerieCourante));
+this.updateInfo();
+}
+ }
+
+async gallerieDelete() {
+
+
+  if(this.gallerieCourante != undefined) {
+    let x = await lastValueFrom(this.http.delete<any>("https://localhost:7222/api/Galleries/" + this.gallerieCourante.id));
+this.updateInfo();
+  }
+
+
+
+}
 
 }
