@@ -1,4 +1,5 @@
-﻿using Labo8.Models;
+﻿using Labo8.Data;
+using Labo8.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -36,8 +37,9 @@ namespace Labo8.Controllers
             IdentityResult identityResult = await this.UserManager.CreateAsync(user, register.Password);
             if (!identityResult.Succeeded)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "La création de l'utilisateur a échoué" });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Message = "La création de l'utilisateur a échoué" });
             }
+            
 
             return Ok(new {Message = "Inscription réussi"});
         }

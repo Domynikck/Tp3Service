@@ -1,3 +1,4 @@
+import { ServiceUtilisateurService } from './../Services/Utilisateur.service';
 import { lastValueFrom } from 'rxjs';
 import { UserLogin } from './../../models/UserLogin';
 import { Component, OnInit } from '@angular/core';
@@ -12,19 +13,14 @@ import { HttpClient } from '@angular/common/http';
 export class LoginComponent implements OnInit {
   loginUsername : string = "";
   loginPassword : string = "";
-  constructor(public router : Router, public http : HttpClient) { }
+  constructor(public router : Router, public http : HttpClient, public utilisateurService : ServiceUtilisateurService) { }
 
   ngOnInit() {
   }
 
   async login(){
     // Retourner à la page d'accueil
-      let loginDTO = new UserLogin(this.loginUsername, this.loginPassword);
-      console.log(this.loginUsername + this.loginPassword+ "yo");
-      let x = await lastValueFrom(this.http.post<any>("https://localhost:7222/api/Users/login", loginDTO));
-      console.log(x);
-      localStorage.setItem("token", x.token );
-      localStorage.setItem("tokenValid", x.validTo);
+     await this.utilisateurService.login(this.loginUsername, this.loginPassword);
     this.router.navigate(['/publicGalleries']);
   }
 

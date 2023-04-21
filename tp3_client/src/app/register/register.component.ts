@@ -1,3 +1,4 @@
+import { ServiceUtilisateurService } from '../Services/Utilisateur.service';
 import { UserRegister } from './../../models/UserRegister';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -16,17 +17,14 @@ export class RegisterComponent implements OnInit {
   registerEmail : string = "";
 
 
-  constructor(public router : Router, public http : HttpClient) { }
+  constructor(public router : Router, public http : HttpClient, public utilisateurService : ServiceUtilisateurService) { }
 
   ngOnInit() {
   }
 
   async register() : Promise<void>{
     // Aller vers la page de connexion
-    let newUser = new UserRegister(0, this.registerUsername, this.registerPassword, this.registerPasswordConfirm, this.registerEmail);
-    console.log( newUser.Password + newUser.PasswordConfirm);
-    let x = await lastValueFrom(this.http.post<UserRegister>("https://localhost:7222/api/Users/register", newUser));
-    console.log(x);
+ await  this.utilisateurService.register(this.registerUsername, this.registerPassword, this.registerPasswordConfirm, this.registerEmail);
     this.router.navigate(['/login']);
   }
 

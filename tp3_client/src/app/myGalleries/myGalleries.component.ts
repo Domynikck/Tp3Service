@@ -1,3 +1,4 @@
+import { GaleriesService } from './../Services/Galeries.service';
 import { Gallerie } from './../../models/Gallerie';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -13,7 +14,7 @@ export class MyGalleriesComponent implements OnInit {
   listGalleries : Gallerie[] = [];
   gallerieCourante : Gallerie | undefined;
   partageUsername : string | undefined;
-  constructor(public http : HttpClient) { }
+  constructor(public http : HttpClient, public galerieService : GaleriesService) { }
 
   ngOnInit() {
 this.updateInfo();
@@ -24,72 +25,37 @@ updateInfo()
   this.getGallery();
 }
   async CreateGallery() {
-    let token = localStorage.getItem("token");
-    let httpOptions = {
-      headers : new HttpHeaders({
-        'Content-Type' : 'application/json',
-        'Authorization' : 'Bearer ' + token
-      })
-    }
-
-
-    let gallerie = new Gallerie(0, this.newGalleryIsPublic, this.newGalleryName );
-    let x = await lastValueFrom(this.http.post<any>("https://localhost:7222/api/Galleries/", gallerie, httpOptions));
-    console.log(x);
+    await this.galerieService.CreateGallery(this.newGalleryIsPublic, this.newGalleryName );
     this.updateInfo();
   }
+
+
   async getGallery() {
-    let token = localStorage.getItem("token");
-    let httpOptions = {
-      headers : new HttpHeaders({
-        'Content-Type' : 'application/json',
-        'Authorization' : 'Bearer ' + token
-      })
-    }
-
-    let x = await lastValueFrom(this.http.get<any>("https://localhost:7222/api/Galleries/MyGalleries/", httpOptions));
-    this.listGalleries = x;
-    console.log(x);
-
+    this.listGalleries = await this.galerieService.getGallery();
   }
+
+
 gallerieClick(gallerie : Gallerie) {
   this.gallerieCourante = gallerie;
   console.log(this.gallerieCourante);
 }
 
 async gallerieVisibilite(bool : boolean) {
-  if(this.gallerieCourante != undefined) {
-
-    this.gallerieCourante.publique = bool;
-
-
-
-    let x = await lastValueFrom(this.http.put<any>("https://localhost:7222/api/Galleries/" + this.gallerieCourante.id, this.gallerieCourante));
-console.log(x);
-
-
+this.galerieService.gallerieVisibilite(bool, this.gallerieCourante)
     this.updateInfo();
   }
-}
+
 
 async PartagerGalerie() {
-  console.log(this.partageUsername)
-  if(this.partageUsername != undefined && this.gallerieCourante != undefined) {
-    let x = await lastValueFrom(this.http.put<any>("https://localhost:7222/api/Galleries/PartageGalerie/" + this.gallerieCourante.id + "/" + this.partageUsername, this.gallerieCourante));
+this.galerieService.PartagerGalerie(this.partageUsername, this.gallerieCourante);
 this.updateInfo();
 }
- }
+ 
 
 async gallerieDelete() {
 
+ await this.galerieService.gallerieDelete(this.gallerieCourante);
 
-  if(this.gallerieCourante != undefined) {
-    let x = await lastValueFrom(this.http.delete<any>("https://localhost:7222/api/Galleries/" + this.gallerieCourante.id));
 this.updateInfo();
   }
-
-
-
-}
-
 }
