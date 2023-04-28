@@ -64,5 +64,6 @@ namespace Labo8.Data
 
         public DbSet<Labo8.Models.Animal> Animal { get; set; } = default!;
         public DbSet<Labo8.Models.Gallerie> Gallerie { get; set; }
+        public DbSet<Labo8.Models.Photo>? Photo { get; set; }
     }
 }

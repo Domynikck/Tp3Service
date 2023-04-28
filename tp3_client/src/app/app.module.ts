@@ -1,3 +1,4 @@
+import { PhotoComponent } from './photo/photo.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -19,7 +20,8 @@ import { LoginComponent } from './login/login.component';
       RegisterComponent,
       PublicGalleriesComponent,
       MyGalleriesComponent,
-      LoginComponent
+      LoginComponent,
+      PhotoComponent
    ],
   imports: [
     BrowserModule,

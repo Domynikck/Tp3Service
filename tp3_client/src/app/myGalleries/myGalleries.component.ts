@@ -3,6 +3,7 @@ import { Gallerie } from './../../models/Gallerie';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
+
 @Component({
   selector: 'app-myGalleries',
   templateUrl: './myGalleries.component.html',

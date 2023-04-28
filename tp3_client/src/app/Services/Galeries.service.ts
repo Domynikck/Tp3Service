@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ElementRef, Injectable } from '@angular/core';
 
 import { Gallerie } from './../../models/Gallerie';
 import { Component, OnInit } from '@angular/core';
@@ -62,5 +62,21 @@ async getGalleryPublique(): Promise<Gallerie[]> {
 return x;
 }
 
+async uploadPicture( elementRef ?: ElementRef<any>) : Promise<void> {
+  if(elementRef == undefined){
+    console.log("Input Non chargé")
+    return;
+  }
+  let file = elementRef.nativeElement.files[0];
+  if(file == null){
+    console.log("Input ne contient aucune image")
+    return;
+  }
+let formData = new FormData();
+formData.append("monImage", file, file.name)
+
+let x = await lastValueFrom(this.http.post<any>("https://localhost:7222/api/Photos/", formData))
+console.log(x);
+}
 
 }
