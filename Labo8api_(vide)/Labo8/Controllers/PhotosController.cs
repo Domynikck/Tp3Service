@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Labo8.Data;
 using Labo8.Models;
+using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Labo8.Controllers
 {
+   
     [Route("api/[controller]")]
     [ApiController]
     public class PhotosController : ControllerBase
@@ -33,21 +36,25 @@ namespace Labo8.Controllers
         }
 
         // GET: api/Photos/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Photo>> GetPhoto(int id)
+        [HttpGet("{size}/{id}")]
+        public async Task<ActionResult<Photo>> GetPhoto(string size, int id )
         {
           if (_context.Photo == null)
           {
               return NotFound();
           }
-            var photo = await _context.Photo.FindAsync(id);
-
-            if (photo == null)
+            Photo? photo = await _context.Photo.FindAsync(id);
+            if (photo == null || photo.FileName == null || photo.MimeType == null)
             {
-                return NotFound();
+                return NotFound(new { Message = "Cette photo n'existe pas" });
             }
+            if (!(Regex.Match(size, "original|miniature").Success))
+            {
+                return BadRequest(new { Message = "La taille demandée est inadéquate" });
+            }
+            byte[] bytes = System.IO.File.ReadAllBytes(Directory.GetCurrentDirectory() + "/images/" + size + "/" + photo.FileName);
+            return File(bytes, photo.MimeType);
 
-            return photo;
         }
 
         // PUT: api/Photos/5
@@ -83,9 +90,9 @@ namespace Labo8.Controllers
 
         // POST: api/Photos
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("{id}")]
+        [HttpPost("")]
         [DisableRequestSizeLimit]
-        public async Task<ActionResult<Photo>> PostPhoto(Photo photo)
+        public async Task<ActionResult<Photo>> PostPhoto()
         {
           //if (_context.Photo == null)
           //{
@@ -98,20 +105,29 @@ namespace Labo8.Controllers
 
             try
             {
+  
                 IFormCollection formCollection = await Request.ReadFormAsync();
                 IFormFile? file = formCollection.Files.GetFile("monImage");
                 if(file != null)
                 {
+                    Photo photo = new Photo();
                     Image image = Image.Load(file.OpenReadStream());
 
                     photo.FileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     photo.MimeType = file.ContentType;
 
                     image.Save(Directory.GetCurrentDirectory() + "/images/original/" + photo.FileName);
+                    image.Mutate(i => i.Resize(new ResizeOptions()
+                    {
+                        Mode = ResizeMode.Min,
+                        Size = new Size() { Width = 320 }
+                    }));
+                    image.Save(Directory.GetCurrentDirectory() + "/images/miniature/" + photo.FileName);
 
-                    _context.Entry(photo).State = EntityState.Modified;
+                     _context.Photo.Add(photo);
+                    
                     await _context.SaveChangesAsync();
-
+                    return NoContent();
                 } else
                 {
                     return NotFound(new { Message = "Aucune image fournie" });
@@ -137,6 +153,12 @@ namespace Labo8.Controllers
             {
                 return NotFound();
             }
+            if (photo.MimeType != null && photo.FileName != null)
+            {
+                System.IO.File.Delete(Directory.GetCurrentDirectory() + "/images/miniature/" + photo.FileName);
+                System.IO.File.Delete(Directory.GetCurrentDirectory() + "/images/original/" + photo.FileName);
+            }
+
 
             _context.Photo.Remove(photo);
             await _context.SaveChangesAsync();

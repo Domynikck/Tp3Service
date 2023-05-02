@@ -2,3 +2,4 @@
 [0421/175946.930:ERROR:registration_protocol_win.cc(106)] CreateFile: Le fichier spécifié est introuvable. (0x2)
 [0421/175947.531:ERROR:registration_protocol_win.cc(106)] CreateFile: Le fichier spécifié est introuvable. (0x2)
 [0421/175947.532:ERROR:registration_protocol_win.cc(106)] CreateFile: Le fichier spécifié est introuvable. (0x2)
+[0502/160419.666:ERROR:registration_protocol_win.cc(106)] CreateFile: Le fichier spécifié est introuvable. (0x2)

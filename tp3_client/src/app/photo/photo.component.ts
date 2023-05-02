@@ -19,7 +19,7 @@ export class PhotoComponent implements OnInit {
   }
 
   uploadPicture () {
-      this.galerieService.uploadPicture();
+      this.galerieService.uploadPicture(this.pictureInput);
   }
     
 

@@ -63,6 +63,7 @@ return x;
 }
 
 async uploadPicture( elementRef ?: ElementRef<any>) : Promise<void> {
+
   if(elementRef == undefined){
     console.log("Input Non chargé")
     return;
@@ -74,7 +75,6 @@ async uploadPicture( elementRef ?: ElementRef<any>) : Promise<void> {
   }
 let formData = new FormData();
 formData.append("monImage", file, file.name)
-
 let x = await lastValueFrom(this.http.post<any>("https://localhost:7222/api/Photos/", formData))
 console.log(x);
 }

@@ -1085,3 +1085,4 @@ C:\Users\2139752\Desktop\Tp3Service\Labo8api_(vide)\Labo8\obj\Debug\net6.0\refin
 C:\Users\2139752\Desktop\Tp3Service\Labo8api_(vide)\Labo8\obj\Debug\net6.0\Labo8.pdb
 C:\Users\2139752\Desktop\Tp3Service\Labo8api_(vide)\Labo8\obj\Debug\net6.0\Labo8.genruntimeconfig.cache
 C:\Users\2139752\Desktop\Tp3Service\Labo8api_(vide)\Labo8\obj\Debug\net6.0\ref\Labo8.dll
+C:\Users\2139752\Desktop\Tp3Service\Labo8api_(vide)\Labo8\bin\Debug\net6.0\SixLabors.ImageSharp.dll

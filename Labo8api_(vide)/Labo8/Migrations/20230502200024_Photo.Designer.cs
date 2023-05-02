@@ -4,6 +4,7 @@ using Labo8.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Labo8.Migrations
 {
     [DbContext(typeof(Labo8Context))]
-    partial class Labo8ContextModelSnapshot : ModelSnapshot
+    [Migration("20230502200024_Photo")]
+    partial class Photo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,6 +148,10 @@ namespace Labo8.Migrations
                     b.Property<string>("MimeType")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("imageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GallerieId");
@@ -222,15 +228,15 @@ namespace Labo8.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "00142de3-b7b2-48bd-a689-579c48dfd26b",
+                            ConcurrencyStamp = "f497a547-47ec-483c-90ed-0d9e6d83a0fb",
                             Email = "samuelbienvenue@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "SAMUELBIENVENUE@GMAIL.COM",
                             NormalizedUserName = "HUGO",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEhxx1PJ9Tsewrq6jfm0DPLiHkN0C32Iaf+KkFYUp0Cp4vAM6V2b70I1WAGTJtfIvw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELtiIajYhvtfFdiTS3rGA4+o5KXxPEJlKlyvSnOlPknC91TNpcyNLIbtDAPlczBWiA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d13dad0f-02ee-4294-88b4-2afcaecdfb23",
+                            SecurityStamp = "526ca0a4-4096-44ba-8d4e-1f2aa0934b5b",
                             TwoFactorEnabled = false,
                             UserName = "Hugo"
                         },
@@ -238,15 +244,15 @@ namespace Labo8.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111112",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "71b731ef-2e2d-4a6e-b7b2-cabf34bf2dcb",
+                            ConcurrencyStamp = "003a3caa-125b-416c-b586-d5577d5fa0b4",
                             Email = "samuelbienvenue@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "SAMUELBIENVENUE@GMAIL.COM",
                             NormalizedUserName = "EGLANTIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHssGqtdsNvHgOrWchQ6Ffh1kEYr6c5f8Fp4jHs600d42nps9MpZ+p1ajBsJO8LjLQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEK2zBl9vdMxmF6OcpdB377N6VPeGLHngFAvT7TvuyZI9gEmIYOlbKf2jJDWwB7zuBg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9c220f9f-593d-46f0-a01b-aaa274937f12",
+                            SecurityStamp = "69a90d36-6418-4f08-ba22-1fe5849f7c7e",
                             TwoFactorEnabled = false,
                             UserName = "Eglantin"
                         });
