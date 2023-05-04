@@ -13,5 +13,8 @@ namespace Labo8.Models
 
         [JsonIgnore]
         public virtual List<User>? Users { get; set; } = null!;
+
+        [JsonIgnore]
+        public virtual List<Photo>? Photos { get; set; }
     }
 }

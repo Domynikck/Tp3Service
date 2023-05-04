@@ -56,6 +56,24 @@ namespace Labo8.Controllers
             return File(bytes, photo.MimeType);
 
         }
+        // GET: api/AllPhotos
+        [HttpGet("AllPhotos/{id}")]
+        public async Task<ActionResult<IEnumerable<Photo>>> GetAllPhotos(int id)
+        {
+            if (_context.Gallerie == null)
+            {
+                return NotFound();
+            }
+            Gallerie gallerie = await _context.Gallerie.FindAsync(id);
+
+            if (gallerie != null)
+            {
+                return gallerie.Photos;
+            }
+
+
+            return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Utilisateur non toruvé" });
+        }
 
         // PUT: api/Photos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -120,6 +138,7 @@ namespace Labo8.Controllers
                     photo.MimeType = file.ContentType;
                     photo.Gallerie = gallerie;
 
+                    gallerie.Photos.Add(photo);
 
                     image.Save(Directory.GetCurrentDirectory() + "/images/original/" + photo.FileName);
                     image.Mutate(i => i.Resize(new ResizeOptions()
