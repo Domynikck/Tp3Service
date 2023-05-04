@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { GaleriesService } from '../Services/Galeries.service';
+import { Photo } from './../../models/Photo';
 declare var Masonry : any;
 declare var imagesLoaded : any;
 
@@ -12,7 +13,7 @@ declare var imagesLoaded : any;
 export class PhotoComponent implements OnInit {
 
   @ViewChild("myPictureViewChild", {static:false}) pictureInput ?: ElementRef;
-
+  images : Photo[] = [];
   constructor(public galerieService : GaleriesService) { }
 
   ngOnInit(): void {

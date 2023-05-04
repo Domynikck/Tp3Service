@@ -38,6 +38,7 @@ updateInfo()
 
 gallerieClick(gallerie : Gallerie) {
   this.gallerieCourante = gallerie;
+  this.galerieService.setGalerieCourante(this.gallerieCourante);
   console.log(this.gallerieCourante);
 }
 

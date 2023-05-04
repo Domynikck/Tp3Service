@@ -90,9 +90,9 @@ namespace Labo8.Controllers
 
         // POST: api/Photos
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("")]
+        [HttpPost("{id}")]
         [DisableRequestSizeLimit]
-        public async Task<ActionResult<Photo>> PostPhoto()
+        public async Task<ActionResult<Photo>> PostPhoto(int id)
         {
           //if (_context.Photo == null)
           //{
@@ -110,11 +110,16 @@ namespace Labo8.Controllers
                 IFormFile? file = formCollection.Files.GetFile("monImage");
                 if(file != null)
                 {
+
+                    Gallerie gallerie = await _context.Gallerie.FindAsync(id);
+
                     Photo photo = new Photo();
                     Image image = Image.Load(file.OpenReadStream());
 
                     photo.FileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     photo.MimeType = file.ContentType;
+                    photo.Gallerie = gallerie;
+
 
                     image.Save(Directory.GetCurrentDirectory() + "/images/original/" + photo.FileName);
                     image.Mutate(i => i.Resize(new ResizeOptions()

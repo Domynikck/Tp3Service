@@ -1,6 +1,6 @@
+import { Gallerie } from 'src/models/Gallerie';
 import { ElementRef, Injectable } from '@angular/core';
 
-import { Gallerie } from './../../models/Gallerie';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
@@ -10,7 +10,16 @@ import { lastValueFrom } from 'rxjs';
 export class GaleriesService {
 
 constructor(public http : HttpClient) { }
+maGalerieCourante : Gallerie | undefined
 
+
+async setGalerieCourante(g : Gallerie) {
+this.maGalerieCourante = g;
+}
+
+async getGalerieCourante() : Promise<Gallerie | undefined> {
+  return this.maGalerieCourante;
+}
 
 async getGallery() : Promise<Gallerie[]> {
 
@@ -68,6 +77,9 @@ async uploadPicture( elementRef ?: ElementRef<any>) : Promise<void> {
     console.log("Input Non chargé")
     return;
   }
+
+
+   
   let file = elementRef.nativeElement.files[0];
   if(file == null){
     console.log("Input ne contient aucune image")
@@ -75,8 +87,10 @@ async uploadPicture( elementRef ?: ElementRef<any>) : Promise<void> {
   }
 let formData = new FormData();
 formData.append("monImage", file, file.name)
-let x = await lastValueFrom(this.http.post<any>("https://localhost:7222/api/Photos/", formData))
+let x = await lastValueFrom(this.http.post<any>("https://localhost:7222/api/Photos/" + this.maGalerieCourante?.id, formData))
 console.log(x);
 }
+
+
 
 }
