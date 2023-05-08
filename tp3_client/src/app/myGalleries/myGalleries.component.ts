@@ -22,6 +22,8 @@ export class MyGalleriesComponent implements OnInit {
   gallerieCourante : Gallerie | undefined;
   partageUsername : string | undefined;
   mesPhotos ?: Photo[];
+  showFullImage = false;
+  selectedImage : Photo | null = null;
   constructor(public http : HttpClient, public galerieService : GaleriesService) { }
 
   ngOnInit() {
@@ -115,4 +117,17 @@ async getPictures() {
   this.mesPhotos = await this.galerieService.GetMyPhoto();
 
 }
+
+showImage(image : Photo) {
+  this.selectedImage = image;
+  this.showFullImage = true;
+}
+
+hideImage() {
+  this.selectedImage = null;
+  this.showFullImage = false;
+}
+
+
+
 }

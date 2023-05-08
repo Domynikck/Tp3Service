@@ -33,8 +33,9 @@ import { SingleImageComponent } from './single-image/single-image.component';
     HttpClientModule,
     RouterModule.forRoot([
       {path:"", redirectTo:"/index", pathMatch:"full"},
-      {path:"index", component:PublicGalleriesComponent},
-      {path:"image/:id", component:SingleImageComponent}
+      {path:"index", component:MyGalleriesComponent},
+      {path:"image/:id", component:SingleImageComponent},
+      
     ])
   ],
   providers: [ {

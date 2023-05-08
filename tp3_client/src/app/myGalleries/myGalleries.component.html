@@ -72,12 +72,15 @@
  
       <div class="grid" #masongrid  >
 <div #masongriditems class="grid-item" *ngFor="let i of mesPhotos">
-  <img [routerLink]="['/image', i.id]" [src]="'https://localhost:7222/api/Photos/miniature/' + i.id"  >
+  <img (click)="showImage(i)"  [src]="'https://localhost:7222/api/Photos/miniature/' + i.id"  >
   <button class="delete" (click)="deletePicture(i)">Effacer</button>
 </div>
-           
-
     </div>
+    <div *ngIf="showFullImage && selectedImage" class="full-image-overlay" (click)="hideImage()">
+      <img [src]="'https://localhost:7222/api/Photos/original/' + selectedImage.id " alt="?">
+    </div>
+
+
       <h1>WASSUP</h1>
       
       <div class="option">

@@ -15,6 +15,7 @@ namespace Labo8.Controllers
    
     [Route("api/[controller]")]
     [ApiController]
+
     public class PhotosController : ControllerBase
     {
         private readonly Labo8Context _context;
