@@ -1,20 +1,27 @@
+import { PhotoComponent } from './../photo/photo.component';
+import { Photo } from './../../models/Photo';
 import { GaleriesService } from './../Services/Galeries.service';
 import { Gallerie } from './../../models/Gallerie';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
-
+declare var Masonry : any;
+declare var imagesLoaded : any;
 @Component({
   selector: 'app-myGalleries',
   templateUrl: './myGalleries.component.html',
   styleUrls: ['./myGalleries.component.css']
 })
 export class MyGalleriesComponent implements OnInit {
+  @ViewChild("myPictureViewChild", {static:false}) pictureInput ?: ElementRef;
+  @ViewChild("masongrid") masongrid?: ElementRef;
+  @ViewChildren('masongriditems') masongriditems?: QueryList<any>;
   newGalleryName : string = "";
   newGalleryIsPublic !: boolean;
   listGalleries : Gallerie[] = [];
   gallerieCourante : Gallerie | undefined;
   partageUsername : string | undefined;
+  mesPhotos ?: Photo[];
   constructor(public http : HttpClient, public galerieService : GaleriesService) { }
 
   ngOnInit() {
@@ -36,10 +43,13 @@ updateInfo()
   }
 
 
-gallerieClick(gallerie : Gallerie) {
+async gallerieClick(gallerie : Gallerie) {
+
   this.gallerieCourante = gallerie;
-  this.galerieService.setGalerieCourante(this.gallerieCourante);
-  console.log(this.gallerieCourante);
+  this.galerieService.setGalerieCourante(gallerie);
+   await this.getPictures();
+
+
 }
 
 async gallerieVisibilite(bool : boolean) {
@@ -55,9 +65,54 @@ this.updateInfo();
  
 
 async gallerieDelete() {
-
  await this.galerieService.gallerieDelete(this.gallerieCourante);
-
+ this.gallerieCourante = undefined;
+ this.galerieService.setGalerieCourante(this.gallerieCourante);
 this.updateInfo();
+await this.getPictures();
   }
+
+
+ async uploadPicture () {
+   let x = await this.galerieService.uploadPicture(this.pictureInput);
+   if(x != undefined) {
+    await  this.getPictures();
+   
+    console.log(this.mesPhotos);
+   }
+
+}
+
+
+ngAfterViewInit() { 
+   this.masongriditems?.changes.subscribe(e => { 
+    this.initMasonry(); 
+   }); 
+   
+    if(this.masongriditems!.length > 0) { 
+     this.initMasonry(); 
+    } 
+   } 
+  
+   initMasonry() { 
+    var grid = this.masongrid?.nativeElement; 
+    var msnry = new Masonry( grid, { 
+     itemSelector: '.grid-item',
+     columnWidth:320, // À modifier si le résultat est moche
+     gutter:3
+    });
+   
+    imagesLoaded( grid ).on( 'progress', function() { 
+     msnry.layout(); 
+    }); 
+   } 
+   async deletePicture(picture:Photo): Promise<void> {
+    console.log("mon id " + picture.id)
+   let x = await lastValueFrom(this.http.delete<any>("https://localhost:7222/api/Photos/" + picture.id));
+    await this.getPictures();
+   }
+async getPictures() {
+  this.mesPhotos = await this.galerieService.GetMyPhoto();
+
+}
 }

@@ -13,7 +13,8 @@ import { RegisterComponent } from './register/register.component';
 import { PublicGalleriesComponent } from './publicGalleries/publicGalleries.component';
 import { MyGalleriesComponent } from './myGalleries/myGalleries.component';
 import { LoginComponent } from './login/login.component';
-
+import { RouterModule } from '@angular/router';
+import { SingleImageComponent } from './single-image/single-image.component';
 @NgModule({
   declarations: [				
     AppComponent,
@@ -29,7 +30,12 @@ import { LoginComponent } from './login/login.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule.forRoot([
+      {path:"", redirectTo:"/index", pathMatch:"full"},
+      {path:"index", component:PublicGalleriesComponent},
+      {path:"image/:id", component:SingleImageComponent}
+    ])
   ],
   providers: [ {
     provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true

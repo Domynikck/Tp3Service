@@ -1,8 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { GaleriesService } from '../Services/Galeries.service';
 import { Photo } from './../../models/Photo';
-declare var Masonry : any;
-declare var imagesLoaded : any;
+
 
 
 @Component({
@@ -19,10 +18,7 @@ export class PhotoComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  uploadPicture () {
-      this.galerieService.uploadPicture(this.pictureInput);
-  }
-    
+
 
 
 }

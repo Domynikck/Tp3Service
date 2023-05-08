@@ -179,10 +179,13 @@ namespace Labo8.Controllers
             }
             if (photo.MimeType != null && photo.FileName != null)
             {
+                string test = Directory.GetCurrentDirectory() + "/images/miniature/" + photo.FileName;
+                string test2 = Directory.GetCurrentDirectory() + "/images/original/" + photo.FileName;
+                string woah = "";
                 System.IO.File.Delete(Directory.GetCurrentDirectory() + "/images/miniature/" + photo.FileName);
                 System.IO.File.Delete(Directory.GetCurrentDirectory() + "/images/original/" + photo.FileName);
             }
-
+            
 
             _context.Photo.Remove(photo);
             await _context.SaveChangesAsync();

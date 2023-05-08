@@ -4,6 +4,7 @@ import { ElementRef, Injectable } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
+import { Photo } from 'src/models/Photo';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,16 +12,19 @@ export class GaleriesService {
 
 constructor(public http : HttpClient) { }
 maGalerieCourante : Gallerie | undefined
+mesPhotosCourantes : Photo[] | undefined
 
-
-async setGalerieCourante(g : Gallerie) {
-this.maGalerieCourante = g;
+async setGalerieCourante(g : Gallerie | undefined) {
+this.maGalerieCourante =  g;
+this.mesPhotosCourantes = await this.GetMyPhoto();
 }
 
 async getGalerieCourante() : Promise<Gallerie | undefined> {
   return this.maGalerieCourante;
 }
-
+async getPhotosCourante() : Promise<Photo[] | undefined> {
+  return this.mesPhotosCourantes;
+}
 async getGallery() : Promise<Gallerie[]> {
 
 
@@ -71,15 +75,13 @@ async getGalleryPublique(): Promise<Gallerie[]> {
 return x;
 }
 
-async uploadPicture( elementRef ?: ElementRef<any>) : Promise<void> {
+async uploadPicture( elementRef ?: ElementRef<any>) : Promise<Photo | void> {
 
   if(elementRef == undefined){
     console.log("Input Non chargé")
     return;
   }
 
-
-   
   let file = elementRef.nativeElement.files[0];
   if(file == null){
     console.log("Input ne contient aucune image")
@@ -88,9 +90,19 @@ async uploadPicture( elementRef ?: ElementRef<any>) : Promise<void> {
 let formData = new FormData();
 formData.append("monImage", file, file.name)
 let x = await lastValueFrom(this.http.post<any>("https://localhost:7222/api/Photos/" + this.maGalerieCourante?.id, formData))
-console.log(x);
+return  elementRef.nativeElement.files[0];
+}
+
+async GetMyPhoto(): Promise<Photo[] | undefined> {
+if(this.maGalerieCourante == undefined){
+  let photo: Photo[] | PromiseLike<Photo[] | undefined> | undefined = [];
+  return photo;
 }
 
 
+  let x = await lastValueFrom(this.http.get<any>("https://localhost:7222/api/Photos/AllPhotos/" + this.maGalerieCourante?.id))
+  console.log(x);
+  return x;
+}
 
 }

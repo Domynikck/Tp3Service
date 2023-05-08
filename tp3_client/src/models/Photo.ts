@@ -1,3 +1,3 @@
 export class Photo{
-    constructor( public UserName : string, public Password : string){}
+    constructor(public id: number, public FileName : string, public MimeType : string){}
 }

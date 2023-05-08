@@ -228,7 +228,13 @@ namespace Labo8.Controllers
             {
                 return Forbid();
             }
-
+            foreach (Photo photo in gallerie.Photos)
+            {
+                System.IO.File.Delete(Directory.GetCurrentDirectory() + "/images/miniature/" + photo.FileName);
+                System.IO.File.Delete(Directory.GetCurrentDirectory() + "/images/original/" + photo.FileName);
+                _context.Photo.Remove(photo);
+              
+            }
             _context.Gallerie.Remove(gallerie);
             await _context.SaveChangesAsync();
 
