@@ -150,7 +150,7 @@ namespace Labo8.Controllers
                     image.Save(Directory.GetCurrentDirectory() + "/images/miniature/" + photo.FileName);
 
                      _context.Photo.Add(photo);
-                    
+                    _context.Entry(gallerie).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
                     return NoContent();
                 } else

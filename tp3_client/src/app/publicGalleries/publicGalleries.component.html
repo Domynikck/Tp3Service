@@ -16,7 +16,7 @@
 <div *ngFor="let g of listeGalleriesPublique">
     <div class="galleryThumbnail">
       <div>{{g.gallerieName}}</div>
-      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #1">
+      <img (click)="gallerieClick(g)" src="/assets/images/galleryThumbnail.png" alt="Galerie #1">
    </div>
    </div>
    
@@ -29,6 +29,14 @@
     <div class="col-4">
       <!-- Photo de la galerie sélectionnée (Partie 2 !) -->
       <h2>Photos de la galerie sélectionnée <mat-icon>photo_camera</mat-icon></h2>
+      <div class="grid" #masongrid  >
+        <div #masongriditems class="grid-item" *ngFor="let i of mesPhotos">
+          <img (click)="showImage(i)"  [src]="'https://localhost:7222/api/Photos/miniature/' + i.id"  >
+        </div>
+            </div>
+            <div *ngIf="showFullImage && selectedImage" class="full-image-overlay" (click)="hideImage()">
+              <img [src]="'https://localhost:7222/api/Photos/original/' + selectedImage.id " alt="?">
+            </div>
     </div>
 
   </div>

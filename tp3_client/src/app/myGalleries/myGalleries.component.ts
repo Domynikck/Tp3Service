@@ -27,6 +27,7 @@ export class MyGalleriesComponent implements OnInit {
   constructor(public http : HttpClient, public galerieService : GaleriesService) { }
 
   ngOnInit() {
+    this.getPictures();
 this.updateInfo();
   }
 
@@ -100,7 +101,7 @@ ngAfterViewInit() {
     var grid = this.masongrid?.nativeElement; 
     var msnry = new Masonry( grid, { 
      itemSelector: '.grid-item',
-     columnWidth:320, // À modifier si le résultat est moche
+     columnWidth:350, // À modifier si le résultat est moche
      gutter:3
     });
    
@@ -127,7 +128,5 @@ hideImage() {
   this.selectedImage = null;
   this.showFullImage = false;
 }
-
-
 
 }
