@@ -27,6 +27,8 @@ export class MyGalleriesComponent implements OnInit {
   constructor(public http : HttpClient, public galerieService : GaleriesService) { }
 
   ngOnInit() {
+    this.gallerieCourante = undefined;
+    this.galerieService.setGalerieCourante(this.gallerieCourante);
     this.getPictures();
 this.updateInfo();
   }

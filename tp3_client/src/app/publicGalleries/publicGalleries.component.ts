@@ -23,6 +23,8 @@ export class PublicGalleriesComponent implements OnInit {
   showFullImage = false;
   selectedImage : Photo | null = null;
   ngOnInit() {
+    this.gallerieCourante = undefined;
+    this.galerieService.setGalerieCourante(this.gallerieCourante);
     this.getGallery();
     this.getPictures();
   }

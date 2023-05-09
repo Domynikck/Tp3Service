@@ -62,6 +62,9 @@
         <div class="option">
           <button mat-raised-button color="warn" (click)="gallerieDelete()" >Supprimer la galerie <mat-icon>delete</mat-icon></button>
         </div>
+        <div class="option">
+          <input #myPictureViewChild type="file" name="coverPicture"><button  (click)="uploadPicture()" >Ajouter une image<mat-icon>photo_library</mat-icon></button>
+        </div>
       </div>
 
       <hr>
@@ -83,9 +86,7 @@
 
       <h1>WASSUP</h1>
       
-      <div class="option">
-          <input #myPictureViewChild type="file" name="coverPicture"><button  (click)="uploadPicture()" >Ajouter une image<mat-icon>photo_library</mat-icon></button>
-        </div>
+
     </div>
 
   </div>
