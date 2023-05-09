@@ -113,15 +113,6 @@ namespace Labo8.Controllers
         [DisableRequestSizeLimit]
         public async Task<ActionResult<Photo>> PostPhoto(int id)
         {
-          //if (_context.Photo == null)
-          //{
-          //    return Problem("Entity set 'Labo8Context.Photo'  is null.");
-          //}
-          //  _context.Photo.Add(photo);
-          //  await _context.SaveChangesAsync();
-
-          //  return CreatedAtAction("GetPhoto", new { id = photo.Id }, photo);
-
             try
             {
   
@@ -164,6 +155,60 @@ namespace Labo8.Controllers
             }
 
         }
+        [HttpPost("SetCover/{id}")]
+        [DisableRequestSizeLimit]
+        public async Task<ActionResult<Photo>> PostCover(int id)
+        {
+            try
+            {
+
+                IFormCollection formCollection = await Request.ReadFormAsync();
+                IFormFile? file = formCollection.Files.GetFile("monCover");
+                if (file != null)
+                {
+
+                    Gallerie gallerie = await _context.Gallerie.FindAsync(id);
+
+                    Photo photo = new Photo();
+                    Image image = Image.Load(file.OpenReadStream());
+
+                    photo.FileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    photo.MimeType = file.ContentType;
+                    
+
+                 
+
+
+                    image.Mutate(i => i.Resize(new ResizeOptions()
+                    {
+                        Mode = ResizeMode.Min,
+                        Size = new Size() { Width = 320 }
+                    }));
+                    image.Save(Directory.GetCurrentDirectory() + "/images/miniature/" + photo.FileName);
+ 
+
+
+                    _context.Photo.Add(photo);
+                    await _context.SaveChangesAsync(); 
+
+                    gallerie.CoverID = photo.Id;
+                    _context.Entry(gallerie).State = EntityState.Modified;
+                     _context.Update(gallerie);
+                    await _context.SaveChangesAsync();
+                    return NoContent();
+                }
+                else
+                {
+                    return NotFound(new { Message = "Aucune image fournie" });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+        }
+
 
         // DELETE: api/Photos/5
         [HttpDelete("{id}")]

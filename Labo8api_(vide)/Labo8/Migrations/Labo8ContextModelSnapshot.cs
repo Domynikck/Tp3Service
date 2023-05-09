@@ -88,11 +88,11 @@ namespace Labo8.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("CoverID")
+                        .HasColumnType("int");
+
                     b.Property<string>("GallerieName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Publique")
@@ -222,15 +222,15 @@ namespace Labo8.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "00142de3-b7b2-48bd-a689-579c48dfd26b",
+                            ConcurrencyStamp = "976f9b83-69b5-4946-875f-c49ad5c40b68",
                             Email = "samuelbienvenue@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "SAMUELBIENVENUE@GMAIL.COM",
                             NormalizedUserName = "HUGO",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEhxx1PJ9Tsewrq6jfm0DPLiHkN0C32Iaf+KkFYUp0Cp4vAM6V2b70I1WAGTJtfIvw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGfZ/2LEA8xFj0bwQ12zUALZqvkbSqx4mxl5XnmIE/mDTgiFICKd1jy8zrH/WXtzuQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d13dad0f-02ee-4294-88b4-2afcaecdfb23",
+                            SecurityStamp = "d6ca1cdd-bb89-4727-9938-86a9eabe411d",
                             TwoFactorEnabled = false,
                             UserName = "Hugo"
                         },
@@ -238,15 +238,15 @@ namespace Labo8.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111112",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "71b731ef-2e2d-4a6e-b7b2-cabf34bf2dcb",
+                            ConcurrencyStamp = "5b51376a-fef8-4d28-9241-42958934e07a",
                             Email = "samuelbienvenue@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "SAMUELBIENVENUE@GMAIL.COM",
                             NormalizedUserName = "EGLANTIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHssGqtdsNvHgOrWchQ6Ffh1kEYr6c5f8Fp4jHs600d42nps9MpZ+p1ajBsJO8LjLQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPysDD+yrM0iRXgiRUeZr4f+vdLl45DtqldU4SiBB+iOWKpVynq8j5vokue1MPgs+g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9c220f9f-593d-46f0-a01b-aaa274937f12",
+                            SecurityStamp = "c28e9005-1bb5-4a84-82de-beabb4d15d93",
                             TwoFactorEnabled = false,
                             UserName = "Eglantin"
                         });
@@ -403,7 +403,7 @@ namespace Labo8.Migrations
             modelBuilder.Entity("Labo8.Models.Photo", b =>
                 {
                     b.HasOne("Labo8.Models.Gallerie", "Gallerie")
-                        .WithMany()
+                        .WithMany("Photos")
                         .HasForeignKey("GallerieId");
 
                     b.Navigation("Gallerie");
@@ -458,6 +458,11 @@ namespace Labo8.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Labo8.Models.Gallerie", b =>
+                {
+                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }

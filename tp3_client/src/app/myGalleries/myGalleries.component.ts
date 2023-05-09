@@ -14,6 +14,7 @@ declare var imagesLoaded : any;
 })
 export class MyGalleriesComponent implements OnInit {
   @ViewChild("myPictureViewChild", {static:false}) pictureInput ?: ElementRef;
+  @ViewChild("myCoverViewChild", {static:false}) coverInput ?: ElementRef;
   @ViewChild("masongrid") masongrid?: ElementRef;
   @ViewChildren('masongriditems') masongriditems?: QueryList<any>;
   newGalleryName : string = "";
@@ -45,6 +46,8 @@ updateInfo()
 
   async getGallery() {
     this.listGalleries = await this.galerieService.getGallery();
+    console.log(this.listGalleries)
+    console.log("Sa update ?")
   }
 
 
@@ -131,4 +134,10 @@ hideImage() {
   this.showFullImage = false;
 }
 
+async ChangeCover() {
+  console.log("ChangeCover");
+  console.log(this.gallerieCourante?.coverID)
+ await this.galerieService.ChangeCover(this.coverInput);
+ this.updateInfo();
+  }
 }

@@ -104,5 +104,22 @@ if(this.maGalerieCourante == undefined){
   console.log(x);
   return x;
 }
-
+async ChangeCover(elementRef ?: ElementRef<any>) {
+  if(this.maGalerieCourante != undefined){
+    if(elementRef == undefined){
+      console.log("Input Non chargé")
+      return;
+    }
+  
+    let file = elementRef.nativeElement.files[0];
+    if(file == null){
+      console.log("Input ne contient aucune image")
+      return;
+    }
+  let formData = new FormData();
+  formData.append("monCover", file, file.name)
+  let x = await lastValueFrom(this.http.post<any>("https://localhost:7222/api/Photos/SetCover/" + this.maGalerieCourante?.id, formData))
+  return  elementRef.nativeElement.files[0];
+  }
+}
 }

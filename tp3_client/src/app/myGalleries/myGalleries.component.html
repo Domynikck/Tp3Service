@@ -16,7 +16,10 @@
       <!-- Photos de couverture de galeries -->
      <div class="galleryThumbnail">
       <div>{{g.gallerieName}}</div>
-      <img (click)="gallerieClick(g)" src="/assets/images/galleryThumbnail.png" alt="Galerie #{{g.id}}">
+
+        <img *ngIf="g.coverID" (click)="gallerieClick(g)"    [src]="'https://localhost:7222/api/Photos/miniature/' + g.coverID"   alt="Galerie #{{g.id}}">
+
+      <img *ngIf="g.coverID == null" (click)="gallerieClick(g)"   src="/assets/images/galleryThumbnail.png"   alt="Galerie #{{g.id}}">
      </div>
     </div>
 
@@ -43,7 +46,7 @@
        <div class="options">
         <!-- Changer la couverture (Partie 2 !!) -->
         <div class="option">
-          <input type="file" name="coverPicture"><button mat-raised-button>Changer la couverture <mat-icon>photo_library</mat-icon></button>
+          <input #myCoverViewChild type="file" name="coverPicture" ><button (click)="ChangeCover()" mat-raised-button>Changer la couverture <mat-icon>photo_library</mat-icon></button>
         </div>
 
         <!-- Partager la galerie -->
